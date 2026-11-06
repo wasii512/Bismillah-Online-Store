@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ur" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Bismillah Store - Online Shopping</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#121212',
+                        brandGold: '#F59E0B',
+                        brandAccent: '#D97706'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
+
+    <!-- Top Notification / Announcement Bar -->
+    <div class="bg-amber-500 text-black text-xs md:text-sm font-bold py-2 px-4 text-center tracking-wide">
+        ? Free Delivery on Orders Over Rs. 3,000 | Direct WhatsApp Ordering Available!
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 bg-gray-900/95 backdrop-blur border-b border-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Brand Logo & Name -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-black font-extrabold text-xl shadow-md">
+                    <i class="fa-solid fa-store"></i>
+                </div>
+                <div>
+                    <h1 id="brand-title" class="text-lg md:text-xl font-black text-amber-400 tracking-wider">Bismillah Store</h1>
+                    <p id="brand-sub" class="text-xs text-gray-400">Online Clothing & Apparel</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-2 md:space-x-3">
+                <!-- Share Store Button -->
+                <button onclick="shareStoreOnWhatsApp()" class="hidden sm:flex items-center space-x-1 bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-2 rounded-lg font-bold transition shadow">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> <span>Share Store</span>
+                </button>
+
+                <!-- Admin Button -->
+                <button onclick="openAdminModal()" class="bg-gray-800 hover:bg-gray-700 text-amber-400 border border-amber-500/30 px-3 py-2 rounded-lg text-xs font-bold transition flex items-center space-x-1">
+                    <i class="fa-solid fa-lock text-xs"></i> <span class="hidden sm:inline">Admin</span>
+                </button>
+
+                <!-- Cart Toggle -->
+                <button onclick="toggleCart()" class="relative bg-amber-500 hover:bg-amber-600 text-black px-3.5 py-2 rounded-lg font-bold transition flex items-center space-x-2 shadow">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count" class="bg-black text-amber-400 rounded-full text-xs w-5 h-5 flex items-center justify-center font-black">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner & Search / Filter Section -->
+    <section class="max-w-7xl mx-auto px-4 py-6 w-full">
+        <div class="bg-gradient-to-r from-gray-900 via-gray-900 to-amber-950/40 border border-amber-500/20 rounded-2xl p-6 md:p-8 mb-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="max-w-xl text-center md:text-left">
+                <span class="bg-amber-500/10 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/20">New Collection 2026</span>
+                <h2 class="text-2xl md:text-4xl font-extrabold text-white mt-3 leading-tight">Upgrade Your Wardrobe With Premium Style</h2>
+                <p id="store-desc" class="text-gray-400 text-sm mt-2">Explore top quality Tracksuits, Hoodies, T-Shirts, and Caps for Men and Women. Order instantly via WhatsApp!</p>
+                <div class="mt-4 flex flex-wrap gap-2 justify-center md:justify-start">
+                    <button onclick="filterCategory('All')" class="cat-btn bg-amber-500 text-black text-xs font-bold px-4 py-2 rounded-lg transition">All Items</button>
+                    <button onclick="filterCategory('Men')" class="cat-btn bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold px-4 py-2 rounded-lg transition">Men's</button>
+                    <button onclick="filterCategory('Women')" class="cat-btn bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold px-4 py-2 rounded-lg transition">Women's</button>
+                    <button onclick="filterCategory('Caps')" class="cat-btn bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold px-4 py-2 rounded-lg transition">Caps</button>
+                </div>
+            </div>
+            <div class="bg-black/40 border border-gray-800 p-4 rounded-xl text-center w-full md:w-72 backdrop-blur">
+                <i class="fa-solid fa-headset text-amber-400 text-2xl mb-1"></i>
+                <h3 class="text-sm font-bold text-white">Need Assistance?</h3>
+                <p id="admin-display-contact" class="text-xs text-amber-400 font-mono mt-1">+92 300 0000000</p>
+                <p id="admin-display-email" class="text-xs text-gray-400 mt-0.5">admin@store.com</p>
+                <button onclick="shareStoreOnWhatsApp()" class="mt-3 w-full bg-green-600 hover:bg-green-700 text-white text-xs py-2 rounded font-bold transition">
+                    <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Grid Container -->
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-black text-white flex items-center space-x-2">
+                <i class="fa-solid fa-fire text-amber-500"></i> <span>Available Products</span>
+            </h3>
+            <span id="product-count" class="text-xs text-gray-400 font-mono">Showing items</span>
+        </div>
+
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar / Modal -->
+    <div id="cart-sidebar" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex justify-end">
+        <div class="bg-gray-900 w-full max-w-md h-full flex flex-col border-l border-gray-800 shadow-2xl p-6 overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                <h3 class="text-lg font-black text-amber-400 flex items-center space-x-2">
+                    <i class="fa-solid fa-bag-shopping"></i> <span>Your Shopping Cart</span>
+                </h3>
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cart-items" class="flex-1 py-4 space-y-3 overflow-y-auto">
+                <!-- Cart items populate here -->
+            </div>
+
+            <!-- Checkout Form & Summary -->
+            <div id="cart-footer" class="border-t border-gray-800 pt-4 space-y-3">
+                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Subtotal:</span>
+                        <span id="cart-subtotal" class="font-bold text-white">Rs. 0</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Discount:</span>
+                        <span id="cart-discount" class="font-bold text-green-400">Rs. 0</span>
+                    </div>
+                    <div class="flex justify-between text-base border-t border-gray-800 pt-2">
+                        <span class="font-black text-amber-400">Total:</span>
+                        <span id="cart-total" class="font-black text-amber-400">Rs. 0</span>
+                    </div>
+                </div>
+
+                <!-- Customer Details Form -->
+                <div class="space-y-2">
+                    <input type="text" id="cust-name" placeholder="Your Full Name" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <input type="tel" id="cust-phone" placeholder="Phone Number (e.g., 03001234567)" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <textarea id="cust-address" placeholder="Complete Delivery Address & City" rows="2" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500"></textarea>
+                    
+                    <!-- Promo Code Input -->
+                    <div class="flex space-x-2">
+                        <input type="text" id="promo-code-input" placeholder="VIP Code (if any)" class="flex-1 bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white uppercase focus:outline-none focus:border-amber-500">
+                        <button onclick="applyPromoCode()" class="bg-gray-800 hover:bg-gray-700 text-amber-400 px-4 py-2 rounded-lg text-xs font-bold transition">Apply</button>
+                    </div>
+                    <p id="promo-msg" class="text-xs text-green-400 hidden"></p>
+                </div>
+
+                <button onclick="checkoutWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> <span>Order via WhatsApp</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login / Settings Modal -->
+    <div id="admin-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                <h3 class="text-lg font-black text-amber-400 flex items-center space-x-2">
+                    <i class="fa-solid fa-lock"></i> <span>Admin Control Panel</span>
+                </h3>
+                <button onclick="closeAdminModal()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Admin Content -->
+            <div class="py-4 space-y-6">
+                <!-- Store Info Settings -->
+                <div class="space-y-3 bg-gray-950 p-4 rounded-xl border border-gray-800">
+                    <h4 class="text-sm font-bold text-white border-b border-gray-800 pb-2">Store Information & Contact</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Brand / Store Name</label>
+                            <input type="text" id="admin-brand-name" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Admin WhatsApp / Cell No</label>
+                            <input type="text" id="admin-phone-input" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500" placeholder="923001234567">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Admin Email Address</label>
+                            <input type="email" id="admin-email-input" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Store Address / Location</label>
+                            <input type="text" id="admin-address-input" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500">
+                        </div>
+                    </div>
+                    <button onclick="saveStoreSettings()" class="bg-amber-500 hover:bg-amber-600 text-black text-xs font-bold px-4 py-2 rounded transition">Save Store Settings</button>
+                </div>
+
+                <!-- Products Price & Details Manager -->
+                <div class="space-y-3 bg-gray-950 p-4 rounded-xl border border-gray-800">
+                    <h4 class="text-sm font-bold text-white border-b border-gray-800 pb-2">Manage Products & Prices</h4>
+                    <div id="admin-products-list" class="space-y-3 max-h-60 overflow-y-auto pr-2">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Customer Order History & VIP Tracker -->
+                <div class="space-y-3 bg-gray-950 p-4 rounded-xl border border-gray-800">
+                    <h4 class="text-sm font-bold text-white border-b border-gray-800 pb-2">Customer Order Tracking & VIP Codes (Auto 15% / 25%)</h4>
+                    <p class="text-xs text-gray-400">Customers who place 2+ orders from the same phone number automatically receive VIP Status and promo codes.</p>
+                    <div id="admin-customer-list" class="space-y-2 text-xs text-gray-300 max-h-40 overflow-y-auto">
+                        <!-- Customer records here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-6 mt-auto text-center text-xs text-gray-400">
+        <p id="footer-brand-text">© 2026 Bismillah Store. All Rights Reserved.</p>
+        <p class="mt-1">Optimized for Facebook, Instagram, TikTok, Chrome & Safari Browsers.</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Initial Store Settings
+        let storeConfig = JSON.parse(localStorage.getItem('storeConfig')) || {
+            brandName: "Bismillah Store",
+            phone: "923000000000",
+            email: "admin@store.com",
+            address: "Main Chakri Road, Chakwal",
+            subTitle: "Online Clothing & Apparel"
+        };
+
+        // Initial Products List (Ladies & Men Tracksuits, T-Shirts, Hoodies, Caps)
+        let products = JSON.parse(localStorage.getItem('storeProducts')) || [
+            { id: 1, name: "Men's Premium Tracksuit", category: "Men", price: 3499, image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=60" },
+            { id: 2, name: "Men's Casual Cotton T-Shirt", category: "Men", price: 1999, image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=60" },
+            { id: 3, name: "Men's Winter Fleece Hoodie", category: "Men", price: 3299, image: "
+<!DOCTYPE html>
+<html lang="ur" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Bismillah Store - Online Shopping</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // Dynamic Theme Configuration Handler
+        function applyTheme(themeColor) {
+            let root = document.documentElement;
+            if(themeColor === 'blue') {
+                tailwind.config = { theme: { extend: { colors: { brandDark: '#121212', brandGold: '#3B82F6', brandAccent: '#2563EB' } } } };
+            } else if(themeColor === 'green') {
+                tailwind.config = { theme: { extend: { colors: { brandDark: '#121212', brandGold: '#10B981', brandAccent: '#059669' } } } };
+            } else if(themeColor === 'red') {
+                tailwind.config = { theme: { extend: { colors: { brandDark: '#121212', brandGold: '#EF4444', brandAccent: '#DC2626' } } } };
+            } else {
+                // Default Gold / Amber
+                tailwind.config = { theme: { extend: { colors: { brandDark: '#121212', brandGold: '#F59E0B', brandAccent: '#D97706' } } } };
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
+
+    <!-- Top Notification Bar -->
+    <div id="top-bar" class="bg-amber-500 text-black text-xs md:text-sm font-bold py-2 px-4 text-center tracking-wide">
+        ? Free Delivery on Orders Over Rs. 3,000 | Direct WhatsApp Ordering Available!
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 bg-gray-900/95 backdrop-blur border-b border-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Brand Logo & Name -->
+            <div class="flex items-center space-x-3">
+                <div id="brand-logo-container" class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-black font-extrabold text-xl shadow-md overflow-hidden">
+                    <img id="header-logo-img" src="" class="w-full h-full object-cover hidden">
+                    <i id="header-logo-icon" class="fa-solid fa-store"></i>
+                </div>
+                <div>
+                    <h1 id="brand-title" class="text-lg md:text-xl font-black text-amber-400 tracking-wider">Bismillah Store</h1>
+                    <p id="brand-sub" class="text-xs text-gray-400">Online Clothing & Apparel</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-2 md:space-x-3">
+                <button onclick="shareStoreOnWhatsApp()" class="hidden sm:flex items-center space-x-1 bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-2 rounded-lg font-bold transition shadow">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> <span>Share Store</span>
+                </button>
+
+                <button onclick="openAdminModal()" class="bg-gray-800 hover:bg-gray-700 text-amber-400 border border-amber-500/30 px-3 py-2 rounded-lg text-xs font-bold transition flex items-center space-x-1">
+                    <i class="fa-solid fa-lock text-xs"></i> <span class="hidden sm:inline">Admin Panel</span>
+                </button>
+
+                <button onclick="toggleCart()" class="relative bg-amber-500 hover:bg-amber-600 text-black px-3.5 py-2 rounded-lg font-bold transition flex items-center space-x-2 shadow">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count" class="bg-black text-amber-400 rounded-full text-xs w-5 h-5 flex items-center justify-center font-black">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-4 py-6 w-full">
+        <div class="bg-gradient-to-r from-gray-900 via-gray-900 to-amber-950/40 border border-amber-500/20 rounded-2xl p-6 md:p-8 mb-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="max-w-xl text-center md:text-left">
+                <span class="bg-amber-500/10 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/20">New Collection 2026</span>
+                <h2 class="text-2xl md:text-4xl font-extrabold text-white mt-3 leading-tight">Upgrade Your Wardrobe With Premium Style</h2>
+                <p id="store-desc" class="text-gray-400 text-sm mt-2">Explore top quality Tracksuits, Hoodies, T-Shirts, and Caps for Men and Women. Order instantly via WhatsApp!</p>
+                <div class="mt-4 flex flex-wrap gap-2 justify-center md:justify-start">
+                    <button onclick="filterCategory('All')" class="cat-btn bg-amber-500 text-black text-xs font-bold px-4 py-2 rounded-lg transition">All Items</button>
+                    <button onclick="filterCategory('Men')" class="cat-btn bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold px-4 py-2 rounded-lg transition">Men's</button>
+                    <button onclick="filterCategory('Women')" class="cat-btn bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold px-4 py-2 rounded-lg transition">Women's</button>
+                    <button onclick="filterCategory('Caps')" class="cat-btn bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold px-4 py-2 rounded-lg transition">Caps</button>
+                </div>
+            </div>
+            <div class="bg-black/40 border border-gray-800 p-4 rounded-xl text-center w-full md:w-72 backdrop-blur">
+                <i class="fa-solid fa-headset text-amber-400 text-2xl mb-1"></i>
+                <h3 class="text-sm font-bold text-white">Need Assistance?</h3>
+                <p id="admin-display-contact" class="text-xs text-amber-400 font-mono mt-1">+92 300 0000000</p>
+                <p id="admin-display-email" class="text-xs text-gray-400 mt-0.5">admin@store.com</p>
+                <button onclick="shareStoreOnWhatsApp()" class="mt-3 w-full bg-green-600 hover:bg-green-700 text-white text-xs py-2 rounded font-bold transition">
+                    <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-black text-white flex items-center space-x-2">
+                <i class="fa-solid fa-fire text-amber-500"></i> <span>Available Products</span>
+            </h3>
+            <span id="product-count" class="text-xs text-gray-400 font-mono">Showing items</span>
+        </div>
+
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Populated dynamically -->
+        </div>
+    </section>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cart-sidebar" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex justify-end">
+        <div class="bg-gray-900 w-full max-w-md h-full flex flex-col border-l border-gray-800 shadow-2xl p-6 overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                <h3 class="text-lg font-black text-amber-400 flex items-center space-x-2">
+                    <i class="fa-solid fa-bag-shopping"></i> <span>Your Shopping Cart</span>
+                </h3>
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div id="cart-items" class="flex-1 py-4 space-y-3 overflow-y-auto"></div>
+
+            <div id="cart-footer" class="border-t border-gray-800 pt-4 space-y-3">
+                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Subtotal:</span>
+                        <span id="cart-subtotal" class="font-bold text-white">Rs. 0</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Discount:</span>
+                        <span id="cart-discount" class="font-bold text-green-400">Rs. 0</span>
+                    </div>
+                    <div class="flex justify-between text-base border-t border-gray-800 pt-2">
+                        <span class="font-black text-amber-400">Total:</span>
+                        <span id="cart-total" class="font-black text-amber-400">Rs. 0</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <input type="text" id="cust-name" placeholder="Your Full Name" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <input type="tel" id="cust-phone" placeholder="Phone Number (e.g., 03001234567)" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <textarea id="cust-address" placeholder="Complete Delivery Address & City" rows="2" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500"></textarea>
+                    
+                    <div class="flex space-x-2">
+                        <input type="text" id="promo-code-input" placeholder="VIP Code (if any)" class="flex-1 bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white uppercase focus:outline-none focus:border-amber-500">
+                        <button onclick="applyPromoCode()" class="bg-gray-800 hover:bg-gray-700 text-amber-400 px-4 py-2 rounded-lg text-xs font-bold transition">Apply</button>
+                    </div>
+                    <p id="promo-msg" class="text-xs text-green-400 hidden"></p>
+                </div>
+
+                <button onclick="checkoutWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> <span>Order via WhatsApp</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Settings Modal with Full Editing Options -->
+    <div id="admin-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                <h3 class="text-lg font-black text-amber-400 flex items-center space-x-2">
+                    <i class="fa-solid fa-sliders"></i> <span>Complete Store Admin Panel</span>
+                </h3>
+                <button onclick="closeAdminModal()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="py-4 space-y-6">
+                <!-- 1. Store Info & Contact & Theme Color -->
+                <div class="space-y-3 bg-gray-950 p-4 rounded-xl border border-gray-800">
+                    <h4 class="text-sm font-bold text-white border-b border-gray-800 pb-2">1. Brand Info, Contact & Theme Settings</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Brand / Store Name</label>
+                            <input type="text" id="admin-brand-name" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Admin WhatsApp / Cell No (e.g. 92300...)</label>
+                            <input type="text" id="admin-phone-input" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Admin Email Address</label>
+                            <input type="email" id="admin-email-input" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Logo / Profile Picture Image URL</label>
+                            <input type="text" id="admin-logo-input" placeholder="Paste image link here" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Theme Color Theme</label>
+                            <select id="admin-theme-select" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500">
+                                <option value="gold">Golden / Amber (Default)</option>
+                                <option value="blue">Royal Blue</option>
+                                <option value="green">Emerald Green</option>
+                                <option value="red">Crimson Red</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1">Store Address</label>
+                            <input type="text" id="admin-address-input" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:border-amber-500">
+                        </div>
+                    </div>
+                    <button onclick="saveStoreSettings()" class="bg-amber-500 hover:bg-amber-600 text-black text-xs font-bold px-4 py-2 rounded transition mt-2">Save Profile & Theme</button>
+                </div>
+
+                <!-- 2. Manage Products Prices & Pictures -->
+                <div class="space-y-3 bg-gray-950 p-4 rounded-xl border border-gray-800">
+                    <h4 class="text-sm font-bold text-white border-b border-gray-800 pb-2">2. Edit Products (Prices & Image URLs)</h4>
+                    <div id="admin-products-list" class="space-y-3 max-h-72 overflow-y-auto pr-2">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- 3. Customer Orders & VIP Tracking -->
+                <div class="space-y-3 bg-gray-950 p-4 rounded-xl border border-gray-800">
+                    <h4 class="text-sm font-bold text-white border-b border-gray-800 pb-2">3. Customer Orders & VIP Tracking</h4>
+                    <div id="admin-customer-list" class="space-y-2 text-xs text-gray-300 max-h-36 overflow-y-auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-6 mt-auto text-center text-xs text-gray-400">
+        <p id="footer-brand-text">© 2026 Bismillah Store. All Rights Reserved.</p>
+        <p class="mt-1">Optimized for Facebook, Instagram, TikTok, Chrome & Safari Browsers.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        let storeConfig = JSON.parse(localStorage.getItem('storeConfig')) || {
+            brandName: "Bismillah Store",
+            phone: "923000000000",
+            email: "admin@store.com",
+            address: "Main Chakri Road, Chakwal",
+            subTitle: "Online Clothing & Apparel",
+            logoUrl: "",
+            theme: "gold"
+        };
+
+        let products = JSON.parse(localStorage.getItem('storeProducts')) || [
+            { id: 1, name: "Men's Premium Tracksuit", category: "Men", price: 3499, image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=60" },
+            { id: 2, name: "Men's Casual Cotton T-Shirt", category: "Men", price: 1299, image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=60" },
+            { id: 3, name: "Men's Winter Fleece Hoodie", category: "Men", price: 2899, image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500&auto=format&fit=crop&q=60" },
+            { id: 4, name: "Ladies Stylish Tracksuit", category: "Women", price: 3699, image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&auto=format&fit=crop&q=60" },
+            { id: 5, name: "Ladies Casual T-Shirt", category: "Women", price: 1199, image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&auto=format&fit=crop&q=60" },
+            { id: 6, name: "Ladies Cozy Winter Hoodie", category: "Women", price: 2999, image: "https://images.unsplash.com/photo-1548883354-7622d03aca27?w=500&auto=format&fit=crop&q=60" },
+            { id: 7, name: "Summer Sun Baseball Cap", category: "Caps", price: 699, image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500&auto=format&fit=crop&q=60" },
+            { id: 8, name: "Winter Warm Knitted Cap", category: "Caps", price: 799, image: "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=500&auto=format&fit=crop&q=60" }
+        ];
+
+        let cart = [];
+        let customerOrders = JSON.parse(localStorage.getItem('customerOrders')) || {};
+        let activeCategory = 'All';
+        let appliedDiscountPercent = 0;
+
+        window.onload = function() {
+            applyTheme(storeConfig.theme);
+            updateStoreUI();
+            renderProducts();
+            updateCartCount();
+        };
+
+        function updateStoreUI() {
+            document.getElementById('page-title').innerText = storeConfig.brandName + " - Online Shopping";
+            document.getElementById('brand-title').innerText = storeConfig.brandName;
+            document.getElementById('brand-sub').innerText = storeConfig.subTitle;
+            document.getElementById('admin-display-contact').innerText = "+" + storeConfig.phone;
+            document.getElementById('admin-display-email').innerText = storeConfig.email;
+            document.getElementById('footer-brand-text').innerText = "© 2026 " + storeConfig.brandName + ". All Rights Reserved.";
+
+            // Logo Image or Icon handling
+            const logoImg = document.getElementById('header-logo-img');
+            const logoIcon = document.getElementById('header-logo-icon');
+            if(storeConfig.logoUrl && storeConfig.logoUrl.trim() !== "") {
+                logoImg.src = storeConfig.logoUrl;
+                logoImg.classList.remove('hidden');
+                logoIcon.classList.add('hidden');
+            } else {
+                logoImg.classList.add('hidden');
+                logoIcon.classList.remove('hidden');
+            }
+
+            // Populate Admin fields
+            document.getElementById('admin-brand-name').value = storeConfig.brandName;
+            document.getElementById('admin-phone-input').value = storeConfig.phone;
+            document.getElementById('admin-email-input').value = storeConfig.email;
+            document.getElementById('admin-address-input').value = storeConfig.address;
+            document.getElementById('admin-logo-input').value = storeConfig.logoUrl || "";
+            document.getElementById('admin-theme-select').value = storeConfig.theme || "gold";
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+            
+            let filtered = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
+            document.getElementById('product-count').innerText = `Showing ${filtered.length} items`;
+
+            filtered.forEach(product => {
+                grid.innerHTML += `
+                    <div class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-lg flex flex-col hover:border-amber-500/50 transition">
+                        <div class="h-48 overflow-hidden relative bg-gray-950">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                            <span class="absolute top-2 right-2 bg-black/70 backdrop-blur text-amber-400 text-xs font-bold px-2.5 py-1 rounded-md">${product.category}</span>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-white text-sm md:text-base">${product.name}</h4>
+                                <p class="text-amber-400 font-extrabold text-base mt-1">Rs. ${product.price.toLocaleString()}</p>
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-black text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-cart-plus"></i> <span>Add to Cart</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterCategory(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if(btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All'))) {
+                    btn.className = "cat-btn bg-amber-500 text-black text-xs font-bold px-4 py-2 rounded-lg transition";
+                } else {
+                    btn.className = "cat-btn bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold px-4 py-2 rounded-lg transition";
+                }
+            });
+            renderProducts();
+        }
+
+        function addToCart(productId) {
+            let product = products.find(p => p.id === productId);
+            let existing = cart.find(item => item.id === productId);
+            if(existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCartCount();
+            toggleCart();
+        }
+
+        function updateCartCount() {
+            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-count').innerText = totalQty;
+            renderCartItems();
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cart-items');
+            container.innerHTML = '';
+
+            if(cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-500 text-sm py-10">Your cart is empty.</p>`;
+                document.getElementById('cart-subtotal').innerText = "Rs. 0";
+                document.getElementById('cart-discount').innerText = "Rs. 0";
+                document.getElementById('cart-total').innerText = "Rs. 0";
+                return;
+            }
+
+            let subtotal = 0;
+            cart.forEach((item, index) => {
+                subtotal += item.price * item.qty;
+                container.innerHTML += `
+                    <div class="flex items-center justify-between bg-gray-950 p-3 rounded-xl border border-gray-800">
+                        <div class="flex items-center space-x-3">
+                            <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg">
+                            <div>
+                                <h5 class="text-xs font-bold text-white">${item.name}</h5>
+                                <p class="text-xs text-amber-400">Rs. ${item.price.toLocaleString()} x ${item.qty}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeQty(${index}, -1)" class="w-6 h-6 bg-gray-800 text-white rounded flex items-center justify-center text-xs">-</button>
+                            <span class="text-xs font-bold text-white">${item.qty}</span>
+                            <button onclick="changeQty(${index}, 1)" class="w-6 h-6 bg-gray-800 text-white rounded flex items-center justify-center text-xs">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            let discountAmount = (subtotal * appliedDiscountPercent) / 100;
+            let grandTotal = subtotal - discountAmount;
+
+            document.getElementById('cart-subtotal').innerText = `Rs. ${subtotal.toLocaleString()}`;
+            document.getElementById('cart-discount').innerText = `Rs. ${discountAmount.toLocaleString()} (${appliedDiscountPercent}%)`;
+            document.getElementById('cart-total').innerText = `Rs. ${grandTotal.toLocaleString()}`;
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if(cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartCount();
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('hidden');
+        }
+
+        function applyPromoCode() {
+            let code = document.getElementById('promo-code-input').value.trim().toUpperCase();
+            let msg = document.getElementById('promo-msg');
+            msg.classList.remove('hidden');
+
+            if(code === 'VIP25') {
+                appliedDiscountPercent = 25;
+                msg.innerText = "?? 25% VIP Discount Applied Successfully!";
+                msg.className = "text-xs text-green-400";
+            } else if(code === 'VIP15') {
+                appliedDiscountPercent = 15;
+                msg.innerText = "?? 15% VIP Discount Applied Successfully!";
+                msg.className = "text-xs text-green-400";
+            } else {
+                appliedDiscountPercent = 0;
+                msg.innerText = "? Invalid Promo Code";
+                msg.className = "text-xs text-red-400";
+            }
+            renderCartItems();
+        }
+
+        function checkoutWhatsApp() {
+            let name = document.getElementById('cust-name').value.trim();
+            let phone = document.getElementById('cust-phone').value.trim();
+            let address = document.getElementById('cust-address').value.trim();
+
+            if(!name || !phone || !address) {
+                alert("Please fill in all customer delivery details!");
+                return;
+            }
+            if(cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+
+            if(!customerOrders[phone]) {
+                customerOrders[phone] = { name: name, count: 0 };
+            }
+            customerOrders[phone].count += 1;
+            localStorage.setItem('customerOrders', JSON.stringify(customerOrders));
+
+            let orderCount = customerOrders[phone].count;
+            let assignedCodeMsg = "";
+            if(orderCount === 3) {
+                assignedCodeMsg = "\n?? *VIP Reward Unlocked!* Use code *VIP15* for 15% off on your next order!";
+            } else if(orderCount > 3) {
+                assignedCodeMsg = "\n?? *VIP Elite Reward Unlocked!* Use code *VIP25* for 25% off!";
+            }
+
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let discountAmount = (subtotal * appliedDiscountPercent) / 100;
+            let total = subtotal - discountAmount;
+
+            let orderText = `?? *NEW ORDER RECEIVED - ${storeConfig.brandName}* ??\n\n` +
+                            `?? *Customer:* ${name}\n` +
+                            `?? *Phone:* ${phone}\n` +
+                            `?? *Address:* ${address}\n\n` +
+                            `?? *Order Details:* \n`;
+
+            cart.forEach((item, i) => {
+                orderText += `${i+1}. ${item.name} (Qty: ${item.qty}) - Rs. ${(item.price * item.qty).toLocaleString()}\n`;
+            });
+
+            orderText += `\nSubtotal: Rs. ${subtotal.toLocaleString()}` +
+                         (appliedDiscountPercent > 0 ? `\nDiscount (${appliedDiscountPercent}%): -Rs. ${discountAmount.toLocaleString()}` : ``) +
+                         `\n*Total Amount: Rs. ${total.toLocaleString()}*` +
+                         assignedCodeMsg;
+
+            let whatsappUrl = `https://wa.me/${storeConfig.phone}?text=${encodeURIComponent(orderText)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function shareStoreOnWhatsApp() {
+            let shareText = `Check out *${storeConfig.brandName}* for amazing clothing and accessories! Shop online now: ${window.location.href}`;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
+        }
+
+        // Admin Panel Controls
+        function openAdminModal() {
+            let pwd = prompt("Enter Admin Password:");
+            if(pwd === "admin123" || pwd === "123") {
+                document.getElementById('admin-modal').classList.remove('hidden');
+                renderAdminProducts();
+                renderAdminCustomers();
+            } else if(pwd !== null) {
+                alert("Incorrect password! (Hint: use 123)");
+            }
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        function saveStoreSettings() {
+            storeConfig.brandName = document.getElementById('admin-brand-name').value;
+            storeConfig.phone = document.getElementById('admin-phone-input').value;
+            storeConfig.email = document.getElementById('admin-email-input').value;
+            storeConfig.address = document.getElementById('admin-address-input').value;
+            storeConfig.logoUrl = document.getElementById('admin-logo-input').value;
+            storeConfig.theme = document.getElementById('admin-theme-select').value;
+
+            localStorage.setItem('storeConfig', JSON.stringify(storeConfig));
+            applyTheme(storeConfig.theme);
+            updateStoreUI();
+            alert("Store settings & profile updated successfully!");
+        }
+
+        function renderAdminProducts() {
+            const list = document.getElementById('admin-products-list');
+            list.innerHTML = '';
+            products.forEach((p, idx) => {
+                list.innerHTML += `
+                    <div class="bg-gray-900 p-3 rounded border border-gray-800 space-y-2 text-xs">
+                        <div class="flex justify-between items-center">
+                            <span class="text-white font-bold">${p.name}</span>
+                            <span class="text-gray-400">ID: ${p.id}</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-gray-400 block mb-1">Price (Rs.)</label>
+                                <input type="number" id="p-price-${idx}" value="${p.price}" class="w-full bg-gray-950 border border-gray-700 rounded px-2 py-1 text-white">
+                            </div>
+                            <div>
+                                <label class="text-gray-400 block mb-1">Image URL</label>
+                                <input type="text" id="p-img-${idx}" value="${p.image}" class="w-full bg-gray-950 border border-gray-700 rounded px-2 py-1 text-white">
+                            </div>
+                        </div>
+                        <button onclick="updateProduct(${idx})" class="w-full bg-amber-500 hover:bg-amber-600 text-black py-1.5 rounded font-bold transition">Update Item</button>
+                    </div>
+                `;
+            });
+        }
+
+        function updateProduct(idx) {
+            let newPrice = parseInt(document.getElementById(`p-price-${idx}`).value);
+            let newImg = document.getElementById(`p-img-${idx}`).value.trim();
+            if(!isNaN(newPrice)) {
+                products[idx].price = newPrice;
+            }
+            if(newImg !== "") {
+                products[idx].image = newImg;
+            }
+            localStorage.setItem('storeProducts', JSON.stringify(products));
+            renderProducts();
+            alert("Product updated successfully!");
+        }
+
+        function renderAdminCustomers() {
+            const list = document.getElementById('admin-customer-list');
+            list.innerHTML = '';
+            let keys = Object.keys(customerOrders);
+            if(keys.length === 0) {
+                list.innerHTML = `<p class="text-gray-500">No customer orders recorded yet.</p>`;
+                return;
+            }
+            keys.forEach(phone => {
+                let cust = customerOrders[phone];
+                let vipStatus = cust.count >= 3 ? "? VIP Elite (Eligible for 15%/25% Off)" : `Regular (${cust.count} Orders)`;
+                list.innerHTML += `
+                    <div class="bg-gray-900 p-2 rounded border border-gray-800 flex justify-between">
+                        <span>${cust.name} (${phone})</span>
+                        <span class="text-amber-400 font-bold">${vipStatus}</span>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
